@@ -1,1 +1,7 @@
 // Here you can add other styles
+
+@media screen and (max-width: 518px) {
+    .full-container.container-fluid {
+        padding: 0;
+    }
+}

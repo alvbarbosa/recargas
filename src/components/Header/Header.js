@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   Nav,
   NavItem,
+  NavLink,
+  Badge,
+  Row,
+  Col,
   NavbarToggler,
   NavbarBrand,
 } from 'reactstrap';
+import HeaderDropdown from './HeaderDropdown';
+import Widget02 from '../Widget02';
 
 class Header extends Component {
 
@@ -23,11 +29,6 @@ class Header extends Component {
     document.body.classList.toggle('sidebar-mobile-show');
   }
 
-  asideToggle(e) {
-    e.preventDefault();
-    document.body.classList.toggle('aside-menu-hidden');
-  }
-
   render() {
     return (
       <header className="app-header navbar">
@@ -38,9 +39,13 @@ class Header extends Component {
         <NavbarToggler className="d-md-down-none mr-auto" onClick={this.sidebarToggle}>
           <span className="navbar-toggler-icon"></span>
         </NavbarToggler>
-        <NavbarToggler className="d-md-down-none" onClick={this.asideToggle}>
-          <span className="navbar-toggler-icon"></span>
-        </NavbarToggler>
+        <Nav className="ml-auto" navbar>
+          <Widget02 style={{ width: 200 }} header="$1.000.000" mainText="Saldo" icon="fa fa-laptop" color="cyan" />
+          <NavItem className="d-md-down-none">
+            <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
+          </NavItem>
+          <HeaderDropdown />
+        </Nav>
       </header>
     );
   }
