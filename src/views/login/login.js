@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardGroup, Card, CardBody, Button, Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import {
+  Container, Row, Col, CardGroup, Card, CardBody, Button,
+  Input, InputGroup, InputGroupAddon, InputGroupText
+} from 'reactstrap';
+import { withRouter } from "react-router-dom";
 
 
 class Login extends Component {
@@ -32,7 +36,9 @@ class Login extends Component {
                     </InputGroup>
                     <Row>
                       <Col xs="6">
-                        <Button color="primary" className="px-4">Ingresar</Button>
+                        <Button onClick={() => { this.props.history.push('/') }} color="primary" className="px-4">
+                          Ingresar
+                        </Button>
                       </Col>
                       <Col xs="6" className="text-right">
                         <Button color="link" className="px-0">¿Olvidaste tu contaseña?</Button>
@@ -49,4 +55,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

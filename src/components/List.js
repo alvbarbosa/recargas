@@ -12,10 +12,10 @@ import {
 
 export const List = props => {
   return (
-    <Col style={{ height: 446, overflow: "auto" }}>
+    <Col className="height-70vh">
       <Card>
         <CardHeader className="text-center" style={{ fontSize: 30 }}>
-           Historial de Recargas
+          Ultimas Recargas
         </CardHeader>
         <CardBody>
           <ListGroup>
@@ -34,7 +34,6 @@ export const List = props => {
             <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
             <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
             <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            S
           </ListGroup>
           <p />
         </CardBody>
