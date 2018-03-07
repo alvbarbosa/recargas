@@ -1,7 +1,18 @@
 // Here you can add other styles
+@for $i from 1 through 10 {
+    .height-#{$i*10}vh {
+        height: 10vh * $i;
+        overflow-y: auto;
+    }
+}
 
-@media screen and (max-width: 518px) {
+@media screen and (max-width: 576px) {
     .full-container.container-fluid {
         padding: 0;
+    }
+    @for $i from 1 through 10 {
+        .height-#{$i*10}vh {
+            height: auto;
+        }
     }
 }

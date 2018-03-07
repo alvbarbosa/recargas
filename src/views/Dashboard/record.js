@@ -34,11 +34,11 @@ class Record extends Component {
     return (
       <div>
         <Row>
-          <Col style={{ marginBottom: 40 }}>
+          <Col sm={{ size: 'auto', offset: 3 }} style={{ marginBottom: 40 }}>
             <h3>Fecha Inicial</h3>
             <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
           </Col>
-          <Col style={{ marginBottom: 40 }}>
+          <Col sm={{ size: 'auto', offset: 1 }} style={{ marginBottom: 40 }}>
             <h3>Fecha Final</h3>
             <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
           </Col>
