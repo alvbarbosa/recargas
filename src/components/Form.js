@@ -32,7 +32,7 @@ export const FormComponent = props => {
               </CardHeader>
           <CardBody>
             <Form action="" method="post">
-              <FormGroup style={{ marginTop: 20, marginBottom: 40,}}>  
+              <FormGroup style={{ marginTop: 61, marginBottom: 40,}}>  
                 <InputGroup size="lg">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText><i className="fa fa-phone"></i></InputGroupText>
@@ -40,7 +40,7 @@ export const FormComponent = props => {
                   <Input type="text" id="username" name="username" placeholder="Telefono" />
                 </InputGroup>
               </FormGroup>
-              <FormGroup style={{ marginTop: 20, marginBottom: 40 }}>
+              <FormGroup style={{ marginTop: 61, marginBottom: 40 }}>
                 <InputGroup size="lg">
                   <InputGroupAddon addonType="prepend">
                     <InputGroupText><i className="fa fa-usd"></i></InputGroupText>
@@ -48,15 +48,7 @@ export const FormComponent = props => {
                   <Input type="email" id="email" name="email" placeholder="Valor" />
                 </InputGroup>
               </FormGroup>
-              <FormGroup style={{ marginTop: 20, marginBottom: 40 }}>
-                <InputGroup size="lg">
-                  <InputGroupAddon addonType="prepend">
-                    <InputGroupText><i className="fa fa-asterisk"></i></InputGroupText>
-                  </InputGroupAddon>
-                  <Input type="password" id="password" name="password" placeholder="Operador" />
-                </InputGroup>
-              </FormGroup>
-              <FormGroup className="form-actions text-center" style={{ marginTop: 20}}>
+              <FormGroup className="form-actions text-center" style={{ marginTop: 61}}>
                 <Button style={{ borderRadius: 5 }} type="submit" size="lg" color="success">Recargar</Button>
               </FormGroup>
             </Form>

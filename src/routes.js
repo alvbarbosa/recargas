@@ -1,6 +1,7 @@
 const routes = {
   '/': 'Inicio',
-  '/record': 'Recargas  /  Historial',
-  '/dashboard': 'Recargas  /  Historial',
+  '/record': 'Recargar  /  Historial',
+  '/recharge': 'Recargar  /  Historial',
+  '/purchases': 'Compras',
 };
 export default routes;

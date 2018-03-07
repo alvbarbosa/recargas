@@ -8,6 +8,7 @@ import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 import Record from '../../views/Dashboard/record'
 import Recharge from '../../views/Dashboard/recharge'
+import Purchases from '../../views/Dashboard/purchases'
 
 import Dashboard from '../../views/Dashboard/';
 
@@ -22,6 +23,7 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid className="full-container">
               <Switch>
+                <Route path="/purchases" name="Purchases" component={Purchases} />
                 <Route path="/record" name="Record" component={Record} />
                 <Route path="/recharge" name="Recharge" component={Recharge} />
                 <Route path="/dashboard" name="Dashboard" component={Dashboard} />
@@ -31,7 +33,7 @@ class Full extends Component {
           </main>
           <Aside />
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     );
   }

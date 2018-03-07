@@ -7,7 +7,7 @@ export default {
       children: [
         {
           name: 'Recargar',
-          url: '../../views/login/login.js',
+          url: '/recharge',
           icon: 'icon-screen-smartphone',
         },
         {
@@ -15,7 +15,12 @@ export default {
           url: '/record',
           icon: 'icon-clock',
         }
-      ]
+      ],
+    },
+    {
+      name: 'Compras',
+      url: '/purchases',
+      icon: 'icon-basket-loaded',
     }
   ]
 };
