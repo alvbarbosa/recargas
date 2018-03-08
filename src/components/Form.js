@@ -28,7 +28,7 @@ export const FormComponent = props => {
       <Col>
         <Card className="height-70vh" style={{ fontSize: 30 }}>
           <CardHeader>
-            <div className="text-center">Recargas</div>
+            <div className="text-center titulo">RECARGAS</div>
           </CardHeader>
           <CardBody>
             <Form action="" method="post">
