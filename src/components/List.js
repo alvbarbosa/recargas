@@ -9,8 +9,18 @@ import {
   ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
   Badge
 } from 'reactstrap';
+import { formatCurrency } from "../utils";
 
 export const List = props => {
+  const list = props.listRecharges.map((item, index) => {
+    return (
+      <ListGroupItem key={index} className="list-recharges" disabled tag="a" href="#" action>
+        <div>{item.numberCel}</div>
+        <div>{formatCurrency(parseFloat(item.valueCel), "$")}</div>
+        <div>{(new Date(item.date)).toLocaleString()}</div>
+      </ListGroupItem>
+    )
+  })
   return (
     <Col className="height-70vh">
       <Card>
@@ -19,23 +29,8 @@ export const List = props => {
         </CardHeader>
         <CardBody>
           <ListGroup>
-            <ListGroupItem active tag="a" href="#" action>Cras justo odio</ListGroupItem>
-            <ListGroupItem tag="a" href="#" action>Dapibus ac facilisis in</ListGroupItem>
-            <ListGroupItem tag="a" href="#" action>Morbi leo risus</ListGroupItem>
-            <ListGroupItem tag="a" href="#" action>Porta ac consectetur ac</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
-            <ListGroupItem disabled tag="a" href="#" action>Vestibulum at eros</ListGroupItem>
+            {list}
           </ListGroup>
-          <p />
         </CardBody>
       </Card>
     </Col>

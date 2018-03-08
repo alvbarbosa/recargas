@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter, Route, Switch} from 'react-router-dom';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 // Styles
 // Import Flag Icons Set
@@ -21,8 +21,8 @@ import Login from './views/login/login.js'
 ReactDOM.render((
   <HashRouter>
     <Switch>
-      <Route path="/login" name="Login" component={Login}/>
-      <Route path="/" name="Home" component={Full}/>
+      <Route path="/login" name="Login" component={Login} />
+      <Route path="/" name="Home" component={Full} />
     </Switch>
   </HashRouter>
 ), document.getElementById('root'));

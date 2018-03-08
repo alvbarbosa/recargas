@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Switch, Route, Redirect } from 'react-router-dom';
+import { Link, Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import { Container } from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
@@ -13,8 +13,25 @@ import Profile from '../../components/Profile/profile'
 import RechargeWait from '../../components/recharge-wait/recharge-wait'
 
 import Dashboard from '../../views/Dashboard/';
+import Register from '../../views/register'
+
+import { firebase } from "../../firebase";
 
 class Full extends Component {
+  state = {
+    user: null
+  }
+
+  componentWillMount = () => {
+    firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user })
+      } else {
+        this.props.history.push('/login')
+      }
+    })
+  };
+
   render() {
     return (
       <div className="app">
@@ -29,6 +46,7 @@ class Full extends Component {
                 <Route path="/record" name="Record" component={Record} />
                 <Route path="/recharge" name="Recharge" component={Recharge} />
                 <Route path="/dashboard" name="Dashboard" component={Dashboard} />
+                <Route path="/register" name="Register" component={Register} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/recharge-wait" name="RechargeWait" component={RechargeWait} />
                 <Redirect from="/" to="/dashboard" />
@@ -43,4 +61,4 @@ class Full extends Component {
   }
 }
 
-export default Full;
+export default withRouter(Full);

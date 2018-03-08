@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import {
   Badge,
   DropdownItem,
@@ -6,7 +7,8 @@ import {
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
-import { withRouter } from "react-router-dom"; 
+
+import { auth } from "../../firebase";
 
 class HeaderDropdown extends Component {
 
@@ -25,6 +27,13 @@ class HeaderDropdown extends Component {
     });
   }
 
+  handleSingOut = event => {
+    auth.doSignOut().then(() => {
+      alert("se cerro la sesión")
+      this.props.history.push('/')
+    })
+  }
+
   dropAccnt() {
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -34,14 +43,14 @@ class HeaderDropdown extends Component {
         <DropdownMenu right>
           <DropdownItem onClick={() => { this.props.history.push('/profile') }}><i className="fa fa-user"></i> Perfil</DropdownItem>
           <DropdownItem><i className="fa fa-wrench"></i> Configuracion</DropdownItem>
-          <DropdownItem><i className="fa fa-lock"></i> Cerrar Sesion</DropdownItem>
+          <DropdownItem onClick={this.handleSingOut} ><i className="fa fa-lock"></i> Cerrar Sesion</DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );
   }
 
   render() {
-    const {...attributes} = this.props;
+    const { ...attributes } = this.props;
     return (
       this.dropAccnt()
     );

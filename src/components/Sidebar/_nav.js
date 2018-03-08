@@ -26,6 +26,23 @@ export default {
       name: 'Compras',
       url: '/purchases',
       icon: 'icon-basket-loaded',
+    },
+    {
+      name: 'Usuarios',
+      url: '/register',
+      icon: 'icon-people',
+      children: [
+        {
+          name: 'Crear',
+          url: '/register',
+          icon: 'icon-user-follow',
+        },
+        {
+          name: 'Lista',
+          url: '/listUser',
+          icon: 'icon-list',
+        },
+      ]
     }
   ]
 };
