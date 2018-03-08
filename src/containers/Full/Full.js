@@ -9,6 +9,8 @@ import Footer from '../../components/Footer/';
 import Record from '../../views/Dashboard/record'
 import Recharge from '../../views/Dashboard/recharge'
 import Purchases from '../../views/Dashboard/purchases'
+import Profile from '../../components/Profile/profile'
+
 import Dashboard from '../../views/Dashboard/';
 import Register from '../../views/register'
 
@@ -29,9 +31,6 @@ class Full extends Component {
     })
   };
 
-
-
-
   render() {
     return (
       <div className="app">
@@ -47,6 +46,7 @@ class Full extends Component {
                 <Route path="/recharge" name="Recharge" component={Recharge} />
                 <Route path="/dashboard" name="Dashboard" component={Dashboard} />
                 <Route path="/register" name="Register" component={Register} />
+                <Route path="/profile" name="Profile" component={Profile} />
                 <Redirect from="/" to="/dashboard" />
               </Switch>
             </Container>

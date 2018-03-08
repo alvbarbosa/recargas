@@ -7,6 +7,7 @@ import {
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
+import { withRouter } from "react-router-dom"; 
 
 import { auth } from "../../firebase";
 
@@ -37,11 +38,11 @@ class HeaderDropdown extends Component {
   dropAccnt() {
     return (
       <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle nav>
-          <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
+        <DropdownToggle className="text-center" nav>
+          <img src={'img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com"/>
         </DropdownToggle>
         <DropdownMenu right>
-          <DropdownItem><i className="fa fa-user"></i> Perfil</DropdownItem>
+          <DropdownItem onClick={() => { this.props.history.push('/profile') }}><i className="fa fa-user"></i> Perfil</DropdownItem>
           <DropdownItem><i className="fa fa-wrench"></i> Configuracion</DropdownItem>
           <DropdownItem onClick={this.handleSingOut} ><i className="fa fa-lock"></i> Cerrar Sesion</DropdownItem>
         </DropdownMenu>

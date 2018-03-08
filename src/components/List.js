@@ -24,8 +24,8 @@ export const List = props => {
   return (
     <Col className="height-70vh">
       <Card>
-        <CardHeader className="text-center" style={{ fontSize: 30 }}>
-          Ultimas Recargas
+        <CardHeader className="text-center titulo" style={{ fontSize: 30 }}>
+          ULTIMAS RECARGAS
         </CardHeader>
         <CardBody>
           <ListGroup>
