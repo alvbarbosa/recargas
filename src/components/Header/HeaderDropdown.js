@@ -7,7 +7,6 @@ import {
   DropdownToggle,
   Dropdown
 } from 'reactstrap';
-import { withRouter } from "react-router-dom"; 
 
 import { auth } from "../../firebase";
 
