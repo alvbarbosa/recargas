@@ -14,6 +14,11 @@ export default {
           name: 'Historial',
           url: '/record',
           icon: 'icon-clock',
+        },
+        {
+          name: 'Entradas',
+          url: '/recharge-wait',
+          icon: 'icon-action-redo',
         }
       ],
     },

@@ -17,7 +17,7 @@
     }
 }
 .titulo-dato {
-   color:  #1dca49
+   color:  #1dca49;
 }
 
 .dropdown {
@@ -29,5 +29,9 @@
 }
 
 .col-container {
+    display: flex;
+}
+
+.header {
     display: flex;
 }
