@@ -19,15 +19,8 @@ class Tables extends Component {
         <Row>
           <Col xs="12">
             <Card>
-              <CardHeader>
-                <Row>
-                  <Col md="5">
-                    <i className="fa fa-hourglass-half"></i>
-                  </Col>
-                  <Col>
-                    <h5>Estado Recargas</h5>
-                  </Col>
-                </Row>
+              <CardHeader className="titulo">
+                    <h3><i className="fa fa-hourglass-half"></i> Estado Recargas</h3>
               </CardHeader>
               <CardBody>
                 <Table responsive>

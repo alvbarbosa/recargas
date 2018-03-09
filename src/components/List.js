@@ -9,7 +9,7 @@ import {
   ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
   Badge
 } from 'reactstrap';
-import { formatCurrency } from "../utils";
+import { formatCurrency } from "../utils/";
 
 export const List = props => {
   const list = props.listRecharges.map((item, index) => {
@@ -24,8 +24,8 @@ export const List = props => {
   return (
     <Col className="height-70vh">
       <Card>
-        <CardHeader className="text-center titulo" style={{ fontSize: 30 }}>
-          ULTIMAS RECARGAS
+        <CardHeader className="titulo" style={{ fontSize: 30 }}>
+          <h3><i className="fa fa-paper-plane iconos"></i> Ultimas Recargas</h3>
         </CardHeader>
         <CardBody>
           <ListGroup>

@@ -4,8 +4,8 @@ import {
   Col
 } from 'reactstrap';
 
-import { FormComponent as Form } from '../../components/Form';
-import { List } from '../../components/List';
+import { FormComponent as Form } from '../../components/sales/form';
+import { List } from '../../components/sales/list';
 import { YesNoModal } from "../../components/modal";
 import { formatCurrency } from "../../utils";
 import { firebase } from "../../firebase";

@@ -28,22 +28,19 @@ export const FormComponent = props => {
         <Col>
           <Card className="height-70vh" style={{ fontSize: 30 }}>
             <CardHeader>
-              <div className=" titulo"><h3><i className="fa fa-paper-plane iconos"></i> Recargas</h3></div>
+              <div><h3 className="titulo"><i className="fa fa-paper-plane iconos"></i> Recargas</h3></div>
             </CardHeader>
             <CardBody>
               <Form onSubmit={props.handleRecharge}>
                 <FormGroup style={{ marginTop: 61, marginBottom: 40, }}>
                   <InputGroup size="lg">
                     <InputGroupAddon addonType="prepend">
-                      <InputGroupText><i className="fa fa-phone"></i></InputGroupText>
+                      <InputGroupText><i className="fa fa-user-circle-o"></i></InputGroupText>
                     </InputGroupAddon>
                     <Input
-                      type="number"
-                      min="3000000000"
-                      max="3999999999"
                       id="cel"
                       name="cel"
-                      placeholder="Telefono"
+                      placeholder="Nombre"
                       required
                       onChange={props.handleChangeCel}
                     />
@@ -66,7 +63,7 @@ export const FormComponent = props => {
                   </InputGroup>
                 </FormGroup>
                 <FormGroup className="form-actions text-center" style={{ marginTop: 61 }}>
-                  <Button style={{ borderRadius: 5 }} type="submit" size="lg" color="success">Recargar</Button>
+                  <Button style={{ borderRadius: 5 }} type="submit" size="lg" color="success">Buscar</Button>
                 </FormGroup>
               </Form>
             </CardBody>

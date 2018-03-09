@@ -13,7 +13,7 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink } from 'reactstrap';
-import HeaderDropdown from '../Header/HeaderDropdown';
+import HeaderDropdown from './HeaderDropdown';
 
 const line = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
