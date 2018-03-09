@@ -20,7 +20,7 @@ class Tables extends Component {
           <Col xs="12">
             <Card>
               <CardHeader className="titulo">
-                    <h3><i className="fa fa-hourglass-half"></i> Estado Recargas</h3>
+                    <h3><i className="fa fa-hourglass-half iconos"></i> Estado Recargas</h3>
               </CardHeader>
               <CardBody>
                 <Table responsive>
