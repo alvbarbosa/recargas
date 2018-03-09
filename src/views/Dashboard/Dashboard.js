@@ -14,7 +14,7 @@ import { firebase } from "../../firebase";
 class Dashboard extends Component {
   state = {
     numberCel: "",
-    valueCel: 0,
+    valueCel: "",
     modal: false,
     messageModal: "",
     listRecharges: [],
@@ -33,7 +33,8 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount = () => {
-    this.rechargeRef().off('child_added', data => { this.addRecharge(data) });
+    if (this.state.user)
+      this.rechargeRef().off('child_added', data => { this.addRecharge(data) });
   };
 
   addRecharge = recharge => {
@@ -72,7 +73,9 @@ class Dashboard extends Component {
 
   handleModalYes = () => {
     const { numberCel, valueCel } = this.state
-    const newPostRef = this.rechargeRef().push();
+    const myUserId = this.state.user.uid;
+    const rechargeRef = firebase.database.ref(`recharge/${myUserId}`)
+    const newPostRef = rechargeRef.push();
     const date = (new Date()).getTime()
     newPostRef.set({
       numberCel,
@@ -80,11 +83,15 @@ class Dashboard extends Component {
       date,
     });
     this.toggle()
+    this.setState({
+      numberCel: "",
+      valueCel: "",
+    })
   }
 
   rechargeRef = () => {
     const myUserId = this.state.user.uid;
-    const rechargeRef = firebase.database.ref(`recharge/${myUserId}`)
+    const rechargeRef = firebase.database.ref(`recharge/${myUserId}`).orderByChild('date')
     return rechargeRef
   }
 
@@ -97,11 +104,14 @@ class Dashboard extends Component {
               handleRecharge={this.handleRecharge}
               handleChangeCel={this.handleChangeCel}
               handleChangeValue={this.handleChangeValue}
+              valueCel={this.state.numberCel}
+              valueValue={this.state.valueCel}
             />
           </Col>
           <Col md="6" xs="12">
             <List
-              listRecharges={this.state.listRecharges}
+              // listRecharges={this.state.listRecharges}
+              listRecharges={Object.assign([], this.state.listRecharges)}
             />
           </Col>
         </Row>

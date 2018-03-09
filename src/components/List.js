@@ -12,9 +12,19 @@ import {
 import { formatCurrency } from "../utils";
 
 export const List = props => {
-  const list = props.listRecharges.map((item, index) => {
+  let list = props.listRecharges.reverse()
+  list = list.map((item, index) => {
+    let classN = ""
+    switch (item.status) {
+      case 1:
+        classN = "bg-success text-light"
+        break;
+      case 2:
+        classN = "bg-danger text-light"
+        break;
+    }
     return (
-      <ListGroupItem key={index} className="list-recharges" disabled tag="a" href="#" action>
+      <ListGroupItem key={index} className={`list-recharges ${classN}`} disabled tag="a" href="#" action>
         <div>{item.numberCel}</div>
         <div>{formatCurrency(parseFloat(item.valueCel), "$")}</div>
         <div>{(new Date(item.date)).toLocaleString()}</div>

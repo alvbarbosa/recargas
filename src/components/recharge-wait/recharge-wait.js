@@ -12,7 +12,7 @@ import {
   PaginationLink
 } from 'reactstrap';
 
-class Tables extends Component {
+class EntryRecharges extends Component {
   render() {
     return (
       <div className="animated fadeIn">
@@ -91,4 +91,4 @@ class Tables extends Component {
   }
 }
 
-export default Tables;
+export default EntryRecharges;

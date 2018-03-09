@@ -15,32 +15,85 @@ import {
   PaginationLink
 } from 'reactstrap';
 
+import { firebase } from "../../firebase";
+
 class Record extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      startDate: moment()
-    }
-    this.handleChange = this.handleChange.bind(this);
+  state = {
+    startDate: moment().hour(0).minute(0).second(0).subtract(7, 'days'),
+    endDate: moment().hour(0).minute(0).second(0),
+    user: null,
+    data: null,
   }
 
-  handleChange(date) {
-    this.setState({
-      startDate: date
+  handleChangeStart = date => {
+    this.setData(date, this.state.endDate)
+  }
+  handleChangeEnd = date => {
+    this.setData(this.state.startDate, date)
+  }
+
+  componentWillMount = () => {
+    firebase.auth.onAuthStateChanged(user => {
+      if (user) {
+        this.setState({
+          user
+        })
+        this.setData(this.state.startDate, this.state.endDate)
+      } else {
+        this.props.history.push('/login')
+      }
+    })
+  };
+
+  setData = (startDate, endDate) => {
+    const { user } = this.state
+    const refData = firebase
+      .database
+      .ref(`/recharge/${user.uid}`)
+      .orderByChild("date")
+      .startAt(startDate.toDate().getTime())
+      .endAt(endDate.toDate().getTime() + 86400000)
+    refData.once('value').then(snapshot => {
+      const items = snapshot.val()
+      this.setState({
+        startDate,
+        endDate,
+        data: Object.keys(items).map(function (key) { return items[key]; }),
+      })
+    }).catch(err => {
+      this.setState({
+        data: [],
+        startDate,
+        endDate,
+      })
     });
   }
 
+
   render() {
+    let dataRecharge = null
+    if (this.state.data) {
+      dataRecharge = this.state.data.map((item, index) => {
+        return (
+          <tr key={index} >
+            <td>{item.numberCel}</td>
+            <td>{item.valueCel}</td>
+            <td>{(new Date(item.date)).toLocaleString()}</td>
+            <td><span className="badge badge-success">Active</span></td>
+          </tr>
+        )
+      })
+    }
     return (
       <div>
         <Row>
           <Col sm={{ size: 'auto', offset: 3 }} style={{ marginBottom: 40 }}>
             <h3>Fecha Inicial</h3>
-            <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+            <Datepicker selected={this.state.startDate} onChange={this.handleChangeStart} />
           </Col>
           <Col sm={{ size: 'auto', offset: 1 }} style={{ marginBottom: 40 }}>
             <h3>Fecha Final</h3>
-            <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+            <Datepicker selected={this.state.endDate} onChange={this.handleChangeEnd} />
           </Col>
         </Row>
         <Row>
@@ -56,130 +109,11 @@ class Record extends Component {
                       <th>Telefono</th>
                       <th>Valor de la Recarga</th>
                       <th>Fecha</th>
-                      <th>Hora</th>
+                      <th>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
-                    <tr>
-                      <td>3102443226</td>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
+                    {dataRecharge}
                   </tbody>
                 </Table>
               </CardBody>
