@@ -23,13 +23,14 @@ class Record extends Component {
     endDate: moment().hour(0).minute(0).second(0),
     user: null,
     data: null,
+    filterData: []
   }
 
   handleChangeStart = date => {
-    this.setData(date, this.state.endDate)
+    this.setFilterData(date, this.state.endDate)
   }
   handleChangeEnd = date => {
-    this.setData(this.state.startDate, date)
+    this.setFilterData(this.state.startDate, date)
   }
 
   componentWillMount = () => {
@@ -38,47 +39,54 @@ class Record extends Component {
         this.setState({
           user
         })
-        this.setData(this.state.startDate, this.state.endDate)
+        this.setData()
       } else {
         this.props.history.push('/login')
       }
     })
   };
 
-  setData = (startDate, endDate) => {
+  setData = () => {
     const { user } = this.state
     const refData = firebase
       .database
-      .ref(`/recharge/${user.uid}`)
-      .orderByChild("date")
-      .startAt(startDate.toDate().getTime())
-      .endAt(endDate.toDate().getTime() + 86400000)
+      .ref(`recharge`)
+      .orderByChild('uid')
+      .equalTo(user.uid)
+    // .startAt(startDate.toDate().getTime())
+    // .endAt(endDate.toDate().getTime() + 86400000)
     refData.once('value').then(snapshot => {
       const items = snapshot.val()
       this.setState({
-        startDate,
-        endDate,
         data: Object.keys(items).map(function (key) { return items[key]; }),
       })
+      this.setFilterData(this.state.startDate, this.state.endDate)
     }).catch(err => {
       this.setState({
         data: [],
-        startDate,
-        endDate,
       })
     });
   }
 
+  setFilterData = (startDate, endDate) => {
+    this.setState({
+      startDate,
+      endDate,
+      filterData: this.state.data.filter(e => {
+        return e.timestamp >= startDate.toDate().getTime() && e.timestamp <= (endDate.toDate().getTime() + 86400000)
+      })
+    })
+  }
 
   render() {
     let dataRecharge = null
     if (this.state.data) {
-      dataRecharge = this.state.data.map((item, index) => {
+      dataRecharge = this.state.filterData.map((item, index) => {
         return (
           <tr key={index} >
             <td>{item.numberCel}</td>
             <td>{item.valueCel}</td>
-            <td>{(new Date(item.date)).toLocaleString()}</td>
+            <td>{(new Date(item.timestamp)).toLocaleString()}</td>
             <td><span className="badge badge-success">Active</span></td>
           </tr>
         )
@@ -87,20 +95,24 @@ class Record extends Component {
     return (
       <div>
         <Row>
-          <Col sm={{ size: 'auto', offset: 3 }} style={{ marginBottom: 40 }}>
-            <h3>Fecha Inicial</h3>
-            <Datepicker selected={this.state.startDate} onChange={this.handleChangeStart} />
-          </Col>
-          <Col sm={{ size: 'auto', offset: 1 }} style={{ marginBottom: 40 }}>
-            <h3>Fecha Final</h3>
-            <Datepicker selected={this.state.endDate} onChange={this.handleChangeEnd} />
+          <Col className="fechas" sm={{ size: 'auto', offset: 4 }} style={{ marginBottom: 40 }}>
+            <Row>
+              <Col>
+                <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Inicial</h4>
+                <Datepicker selected={this.state.startDate} onChange={this.handleChangeStart} />
+              </Col>
+              <Col>
+                <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Final</h4>
+                <Datepicker selected={this.state.endDate} onChange={this.handleChangeEnd} />
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>
           <Col>
             <Card>
-              <CardHeader>
-                <i className="fa fa-envelope-square"></i> Historial de Recargas
+              <CardHeader className="titulo">
+                <h3><i className="fa fa-envelope-square"></i> Historial de Recargas</h3>
               </CardHeader>
               <CardBody>
                 <Table hover bordered striped responsive size="sm">

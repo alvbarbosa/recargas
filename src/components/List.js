@@ -9,7 +9,7 @@ import {
   ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText,
   Badge
 } from 'reactstrap';
-import { formatCurrency } from "../utils";
+import { formatCurrency } from "../utils/";
 
 export const List = props => {
   let list = props.listRecharges.reverse()
@@ -27,15 +27,15 @@ export const List = props => {
       <ListGroupItem key={index} className={`list-recharges ${classN}`} disabled tag="a" href="#" action>
         <div>{item.numberCel}</div>
         <div>{formatCurrency(parseFloat(item.valueCel), "$")}</div>
-        <div>{(new Date(item.date)).toLocaleString()}</div>
+        <div>{(new Date(item.timestamp)).toLocaleString()}</div>
       </ListGroupItem>
     )
   })
   return (
     <Col className="height-70vh">
       <Card>
-        <CardHeader className="text-center titulo" style={{ fontSize: 30 }}>
-          ULTIMAS RECARGAS
+        <CardHeader className="titulo" style={{ fontSize: 30 }}>
+          <h3><i className="fa fa-paper-plane iconos"></i> Ultimas Recargas</h3>
         </CardHeader>
         <CardBody>
           <ListGroup>

@@ -42,3 +42,27 @@
 .header {
     display: flex;
 }
+
+.texto {
+    width: 30%;
+}
+
+.icono-mensaje {
+    padding: 13px;
+}
+
+.icono-mensaje:hover {
+    background-color: #20a8d8;
+}
+
+.titulo {
+    color: darkblue;
+}
+
+.iconos::before {
+    font-size: 18px;
+}
+.fechas {
+    background-color: white;
+    padding: 50px;   
+}

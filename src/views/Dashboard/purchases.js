@@ -34,20 +34,24 @@ class Record extends Component {
     return (
       <div>
         <Row>
-          <Col style={{ marginBottom: 40 }}>
-            <h3>Fecha Inicial</h3>
-            <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
-          </Col>
-          <Col style={{ marginBottom: 40 }}>
-            <h3>Fecha Final</h3>
-            <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+          <Col className="fechas" sm={{ size: 'auto', offset: 4 }} style={{ marginBottom: 40 }}>
+            <Row>
+              <Col>
+                <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Inicial</h4>
+                <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+              </Col>
+              <Col>
+                <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Final</h4>
+                <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>
           <Col>
             <Card>
-              <CardHeader>
-                <i className="fa fa-envelope-square"></i> Compras
+              <CardHeader className="titulo">
+                <h3><i className="fa fa-envelope-square"></i> Compras</h3>
               </CardHeader>
               <CardBody>
                 <Table hover bordered striped responsive size="sm">

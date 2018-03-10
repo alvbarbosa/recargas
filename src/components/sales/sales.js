@@ -4,8 +4,8 @@ import {
   Col
 } from 'reactstrap';
 
-import { FormComponent as Form } from '../../components/Form';
-import { List } from '../../components/List';
+import { FormComponent as Form } from '../../components/sales/form';
+import { List } from '../../components/sales/list';
 import { YesNoModal } from "../../components/modal";
 import { formatCurrency } from "../../utils";
 import { firebase } from "../../firebase";
@@ -14,7 +14,7 @@ import { firebase } from "../../firebase";
 class Dashboard extends Component {
   state = {
     numberCel: "",
-    valueCel: "",
+    valueCel: 0,
     modal: false,
     messageModal: "",
     listRecharges: [],
@@ -73,29 +73,19 @@ class Dashboard extends Component {
 
   handleModalYes = () => {
     const { numberCel, valueCel } = this.state
-    const myUserId = this.state.user.uid;
-    const rechargeRef = firebase.database.ref(`recharge`)
-    const newPostRef = rechargeRef.push();
-    const timestamp = (new Date()).getTime()
+    const newPostRef = this.rechargeRef().push();
+    const date = (new Date()).getTime()
     newPostRef.set({
       numberCel,
       valueCel,
-      timestamp,
-      uid: myUserId
+      date,
     });
     this.toggle()
-    this.setState({
-      numberCel: "",
-      valueCel: "",
-    })
   }
 
   rechargeRef = () => {
     const myUserId = this.state.user.uid;
-    const rechargeRef = firebase.database
-      .ref(`recharge`)
-      .orderByChild('uid')
-      .equalTo(myUserId)
+    const rechargeRef = firebase.database.ref(`recharge/${myUserId}`)
     return rechargeRef
   }
 
@@ -108,14 +98,11 @@ class Dashboard extends Component {
               handleRecharge={this.handleRecharge}
               handleChangeCel={this.handleChangeCel}
               handleChangeValue={this.handleChangeValue}
-              valueCel={this.state.numberCel}
-              valueValue={this.state.valueCel}
             />
           </Col>
           <Col md="6" xs="12">
             <List
-              // listRecharges={this.state.listRecharges}
-              listRecharges={Object.assign([], this.state.listRecharges)}
+              listRecharges={this.state.listRecharges}
             />
           </Col>
         </Row>

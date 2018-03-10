@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import {
   Nav,
   NavItem,
@@ -7,12 +8,33 @@ import {
   Row,
   Col,
   NavbarToggler,
-  NavbarBrand,
+  NavbarBrand
 } from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 import Widget02 from '../Widget02';
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      dropdownOpen: false
+    };
+  }
+
+  toggle() {
+    this.setState({
+      dropdownOpen: !this.state.dropdownOpen
+    });
+  }
+
+  handleSingOut = event => {
+    auth.doSignOut().then(() => {
+      alert("se cerro la sesión")
+      this.props.history.push('/')
+    })
+  }
 
   sidebarToggle(e) {
     e.preventDefault();
@@ -41,8 +63,8 @@ class Header extends Component {
         </NavbarToggler>
         <Nav className="ml-auto" navbar>
           <Widget02 style={{ width: 200 }} header="$1.000.000" mainText="Saldo" icon="fa fa-laptop" color="cyan" />
-          <NavItem className="d-md-down-none">
-            <NavLink href="#"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
+          <NavItem className="d-md-down-none icono-mensaje">
+            <NavLink onClick={() => { this.props.history.push('/message') }}><i className="icon-bubbles"></i></NavLink>
           </NavItem>
           <HeaderDropdown />
         </Nav>
@@ -51,4 +73,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

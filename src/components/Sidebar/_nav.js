@@ -7,7 +7,7 @@ export default {
       children: [
         {
           name: 'Recargar',
-          url: '/recharge',
+          url: '/dashboard',
           icon: 'icon-screen-smartphone',
         },
         {
@@ -43,6 +43,11 @@ export default {
           icon: 'icon-list',
         },
       ]
+    },
+    {
+      name: 'Ventas',
+      url: '/sales',
+      icon: 'icon-credit-card',
     }
   ]
 };
