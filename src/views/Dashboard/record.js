@@ -78,6 +78,18 @@ class Record extends Component {
     })
   }
 
+  statusRecharge = status => {
+    switch (status) {
+      case 1:
+        return <span className="badge badge-success">Procesado</span>
+      case 2:
+        return <span className="badge badge-danger">Rechazado</span>
+      default:
+        return <span className="badge badge-light">En espera</span>
+        break;
+    }
+  }
+
   render() {
     let dataRecharge = null
     if (this.state.data) {
@@ -87,7 +99,7 @@ class Record extends Component {
             <td>{item.numberCel}</td>
             <td>{item.valueCel}</td>
             <td>{(new Date(item.timestamp)).toLocaleString()}</td>
-            <td><span className="badge badge-success">Active</span></td>
+            <td>{this.statusRecharge(item.status)}</td>
           </tr>
         )
       })
@@ -115,7 +127,7 @@ class Record extends Component {
                 <h3><i className="fa fa-envelope-square"></i> Historial de Recargas</h3>
               </CardHeader>
               <CardBody>
-                <Table hover bordered striped responsive size="sm">
+                <Table responsive size="sm">
                   <thead>
                     <tr>
                       <th>Telefono</th>

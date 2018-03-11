@@ -14,16 +14,32 @@ import {
 
 import { formatCurrency } from "../../utils";
 
+const statusRecharge = status => {
+  switch (status) {
+    case 1:
+      return <span className="badge badge-success">Procesado</span>
+    case 2:
+      return <span className="badge badge-danger">Rechazado</span>
+    default:
+      return <span className="badge badge-light">En espera</span>
+      break;
+  }
+}
+
 const EntryRecharges = props => {
   let list = null
   if (props.listRecharges) {
     list = props.listRecharges.map(item => {
       return (
-        <tr>
+        <tr
+          onClick={() => props.handleClickTable(item.key)}
+          className="text-center"
+          key={item.key}
+        >
           <td>{item.numberCel}</td>
           <td>{formatCurrency(parseFloat(item.valueCel), "$")}</td>
           <td>{(new Date(item.timestamp)).toLocaleString()}</td>
-          <td><Badge color="warning">En espera</Badge></td>
+          <td>{statusRecharge(item.status)}</td>
         </tr>
       )
     })
@@ -34,12 +50,12 @@ const EntryRecharges = props => {
         <Col xs="12">
           <Card>
             <CardHeader className="titulo">
-              <h3><i className="fa fa-hourglass-half"></i> Estado Recargas</h3>
+              <h3><i className="fa fa-hourglass-half iconos"></i> Estado Recargas</h3>
             </CardHeader>
             <CardBody>
-              <Table responsive>
+              <Table hover responsive >
                 <thead>
-                  <tr>
+                  <tr className="text-center">
                     <th>Telefono</th>
                     <th>Valor</th>
                     <th>Fecha</th>

@@ -26,6 +26,7 @@ class Dashboard extends Component {
       if (user) {
         this.setState({ user })
         this.rechargeRef().on('child_added', data => { this.addRecharge(data) });
+        this.rechargeRef().on('child_changed', data => { this.updateRecharge(data) });
       } else {
         this.props.history.push('/login')
       }
@@ -33,9 +34,23 @@ class Dashboard extends Component {
   }
 
   componentWillUnmount = () => {
-    if (this.state.user)
+    if (this.state.user) {
       this.rechargeRef().off('child_added', data => { this.addRecharge(data) });
+      this.rechargeRef().off('child_changed', data => { this.updateRecharge(data) });
+    }
   };
+
+  updateRecharge = recharge => {
+    const rech = recharge.val()
+    let list = this.state.listRecharges
+    list.find(e => e.uid == rech.uid
+      && e.timestamp == rech.timestamp
+      && e.numberCel == rech.numberCel)
+      .status = rech.status
+    this.setState({
+      listRecharges: list
+    })
+  }
 
   addRecharge = recharge => {
     this.setState({

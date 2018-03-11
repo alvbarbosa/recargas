@@ -69,11 +69,11 @@ class Login extends Component {
     return (
       <div className="app flex-row align-items-center">
         <Container>
-          <Form onSubmit={this.handleForm} >
-            <Row className="justify-content-center">
-              <Col md="6">
-                <CardGroup>
-                  <Card className="p-4">
+          <Row className="justify-content-center">
+            <Col md="8">
+              <CardGroup>
+                <Card className="p-4">
+                  <Form onSubmit={this.handleForm} >
                     <CardBody>
                       <h1>Inicia sesión</h1>
                       <p className="text-muted">Inicia sesión con tu cuenta</p>
@@ -83,7 +83,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="email" onChange={this.handleChangeUser} placeholder="Usuario" required autoFocus />
+                        <Input type="email" onChange={this.handleChangeUser} placeholder="Email" required autoFocus />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -94,21 +94,30 @@ class Login extends Component {
                         <Input type="password" onChange={this.handleChangePass} placeholder="Contraseña" required />
                       </InputGroup>
                       <Row>
-                        <Col xs="6">
+                        <Col xs="5">
                           <Button color="primary" className="px-4">
                             Ingresar
                         </Button>
                         </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">¿Olvidaste tu contaseña?</Button>
+                        <Col xs="7" className="text-right">
+                          <Button onClick={() => this.props.history.push('/resetPassword')} color="link" className="px-0">¿Olvidaste tu contaseña?</Button>
                         </Col>
                       </Row>
                     </CardBody>
-                  </Card>
-                </CardGroup>
-              </Col>
-            </Row>
-          </Form>
+                  </Form>
+                </Card>
+                <Card className="text-white bg-primary py-5 d-md-down-none" style={{ width: 44 + '%' }}>
+                  <CardBody className="text-center">
+                    <div>
+                      <h2>Regístrate</h2>
+                      <p>Después del registro esperar que el administrador apruebe su ingreso.</p>
+                      <Button onClick={() => this.props.history.push('/register')} color="primary" className="mt-3" active>¡Regístrate ahora!</Button>
+                    </div>
+                  </CardBody>
+                </Card>
+              </CardGroup>
+            </Col>
+          </Row>
         </Container>
         <SimpleModal
           toggle={this.toggle}

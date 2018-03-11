@@ -13,7 +13,6 @@ import RechargeWait from '../../views/recharge-wait'
 import Message from '../../components/message/message'
 import Sales from '../../components/sales/sales'
 import Dashboard from '../../views/Dashboard/';
-import Register from '../../views/register'
 
 import { firebase } from "../../firebase";
 
@@ -25,6 +24,12 @@ class Full extends Component {
   componentWillMount = () => {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
+        firebase.database.ref(`users/${user.uid}`).once('value').then(snapshot => {
+          if (!snapshot.val().enable) {
+            alert('Usuario no habilitado')
+            firebase.auth.signOut()
+          }
+        });
         this.setState({ user })
       } else {
         this.props.history.push('/login')
@@ -45,7 +50,6 @@ class Full extends Component {
                 <Route path="/purchases" name="Purchases" component={Purchases} />
                 <Route path="/record" name="Record" component={Record} />
                 <Route path="/dashboard" name="Dashboard" component={Dashboard} />
-                <Route path="/register" name="Register" component={Register} />
                 <Route path="/message" name="Message" component={Message} />
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/sales" name="Sales" component={Sales} />

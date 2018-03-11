@@ -29,20 +29,8 @@ export default {
     },
     {
       name: 'Usuarios',
-      url: '/register',
+      url: '/listUser',
       icon: 'icon-people',
-      children: [
-        {
-          name: 'Crear',
-          url: '/register',
-          icon: 'icon-user-follow',
-        },
-        {
-          name: 'Lista',
-          url: '/listUser',
-          icon: 'icon-list',
-        },
-      ]
     },
     {
       name: 'Ventas',

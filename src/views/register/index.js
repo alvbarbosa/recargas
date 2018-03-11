@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 import {
   Container,
   Row,
@@ -37,7 +38,7 @@ class Register extends Component {
     });
   }
 
-  onSubmit = event => {
+  onSubmit = async event => {
     const {
       passwordOne,
       passwordTwo,
@@ -51,27 +52,36 @@ class Register extends Component {
         modal: true
       })
     } else {
-      auth.doCreateUserWithEmailAndPassword(email, passwordOne)
-        .then(user => {
-          alert(user)
-        }).catch(err => {
-          const messageModal = firebase.errFirebase(err.code)
-          this.setState({
-            messageModal,
-            modal: true,
-          })
+      try {
+        const user = await auth.doCreateUserWithEmailAndPassword(email, passwordOne)
+        await user.updateProfile({
+          displayName: username,
         })
+        firebase.database.ref(`users/${user.uid}`).set({
+          username,
+          email
+        })
+        this.props.history.push('/')
+      } catch (err) {
+        console.log(err.code);
+        const messageModal = firebase.errFirebase(err.code)
+        this.setState({
+          messageModal,
+          modal: true,
+        })
+      }
     }
     event.preventDefault();
   }
+
   render() {
     return (
-      <div className="flex-row align-items-center">
-        <Form onSubmit={this.onSubmit} >
-          <Container>
-            <Row className="justify-content-center">
-              <Col md="6">
-                <Card className="mx-4">
+      <div className="app flex-row align-items-center">
+        <Container>
+          <Row className="justify-content-center">
+            <Col md="6">
+              <Card className="mx-4">
+                <Form onSubmit={this.onSubmit} >
                   <CardBody className="p-4">
                     <h1>Registro</h1>
                     <p className="text-muted">Crear una cuenta</p>
@@ -128,15 +138,15 @@ class Register extends Component {
                     </InputGroup>
                     <Button color="success" block>Crear Cuenta</Button>
                   </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </Form>
+                </Form>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
         <SimpleModal toggle={this.toggle} isOpen={this.state.modal} message={this.state.messageModal} />
       </div>
     );
   }
 }
 
-export default Register;
+export default withRouter(Register);

@@ -35,3 +35,5 @@ export const YesNoModal = props => {
     </Modal>
   )
 }
+
+export { ProcessedRejectModal } from './processed-reject'
