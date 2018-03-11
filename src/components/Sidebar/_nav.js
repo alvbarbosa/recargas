@@ -29,7 +29,7 @@ export default {
     },
     {
       name: 'Usuarios',
-      url: '/listUser',
+      url: '/users',
       icon: 'icon-people',
     },
     {

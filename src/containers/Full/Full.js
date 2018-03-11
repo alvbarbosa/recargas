@@ -13,6 +13,7 @@ import RechargeWait from '../../views/recharge-wait'
 import Message from '../../components/message/message'
 import Sales from '../../components/sales/sales'
 import Dashboard from '../../views/Dashboard/';
+import Users from '../../components/Users';
 
 import { firebase } from "../../firebase";
 
@@ -54,6 +55,7 @@ class Full extends Component {
                 <Route path="/profile" name="Profile" component={Profile} />
                 <Route path="/sales" name="Sales" component={Sales} />
                 <Route path="/recharge-wait" name="RechargeWait" component={RechargeWait} />
+                <Route path="/users" name="Users" component={Users} />
                 <Redirect from="/" to="/dashboard" />
               </Switch>
             </Container>

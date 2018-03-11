@@ -7,5 +7,6 @@ const routes = {
   '/sales': 'Ventas',
   '/message': 'Mensajes',
   '/profile': 'Perfil',
+  '/users': 'Usuarios'
 };
 export default routes;
