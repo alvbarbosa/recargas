@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import { Bar, Doughnut, Line, Pie, Polar, Radar } from 'react-chartjs-2';
-import { 
+import {
   Badge,
-  CardColumns, 
-  Card, 
-  CardHeader, 
-  CardBody,  
+  CardColumns,
+  Card,
+  CardHeader,
+  CardBody,
   ColBadge,
   Row,
   Col,
   Table,
   Pagination,
   PaginationItem,
-  PaginationLink } from 'reactstrap';
+  PaginationLink
+} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
+
+import { firebase } from "../../firebase";
 
 const line = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -152,32 +155,54 @@ const polar = {
   ]
 };
 
-class Charts extends Component {
+class Profile extends Component {
+  state = {
+    name: "",
+    email: "",
+    photoUrl: "",
+    emailVerified: null,
+    uid: "",
+  }
+
+  componentDidMount = () => {
+    const user = firebase.auth.currentUser
+    if (user) {
+      this.setState({
+        name: user.displayName,
+        email: user.email,
+        photoUrl: user.photoURL,
+        emailVerified: user.emailVerified,
+        uid: user.uid,
+      })
+    }
+  }
+
+
   render() {
     return (
       <div className="animated fadeIn">
         <HeaderDropdown />
         <Row>
-        <Col xs="12">
+          <Col xs="12">
             <Card>
               <CardBody style={{ padding: 0 }}>
                 <Table style={{ marginBottom: 0 }} responsive striped>
                   <tbody>
-                  <tr>
-                    <td className="titulo-dato" style={{ fontSize: 17 }}><strong>NOMBRE:</strong></td>
-                    <td>Alvaro Andres Barbosa Suarez</td>
-                  </tr>
-                  <tr>
-                    <td className="titulo-dato" style={{ fontSize: 17 }}><strong>TELEFONO:</strong></td>
-                    <td>3023104576</td>
-                  </tr>
+                    <tr>
+                      <td className="titulo-dato" style={{ fontSize: 17 }}><strong>Nombre: </strong></td>
+                      <td>{this.state.name}</td>
+                    </tr>
+                    <tr>
+                      <td className="titulo-dato" style={{ fontSize: 17 }}><strong>Email: </strong></td>
+                      <td>{this.state.email}</td>
+                    </tr>
                   </tbody>
                 </Table>
               </CardBody>
             </Card>
           </Col>
         </Row>
-        <CardColumns className="cols-2">
+        {/* <CardColumns className="cols-2">
           <Card className="estado">
             <CardHeader>
               Line Chart
@@ -197,10 +222,10 @@ class Charts extends Component {
               </div>
             </CardBody>
           </Card>
-        </CardColumns>
+        </CardColumns> */}
       </div>
     )
   }
 }
 
-export default Charts;
+export default Profile;

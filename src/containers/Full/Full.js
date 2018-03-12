@@ -11,33 +11,37 @@ import Purchases from '../../views/Dashboard/purchases'
 import Profile from '../../components/Profile/profile'
 import RechargeWait from '../../views/recharge-wait'
 import Message from '../../components/message/message'
-import Sales from '../../components/sales/sales'
+import Sales from '../../views/sales'
 import Dashboard from '../../views/Dashboard/';
+import UserNotEnable from '../../views/not-enable'
 
 import { firebase } from "../../firebase";
 
 class Full extends Component {
   state = {
-    user: null
+    user: null,
+    enable: false,
   }
 
   componentWillMount = () => {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
         firebase.database.ref(`users/${user.uid}`).once('value').then(snapshot => {
-          if (!snapshot.val().enable) {
-            alert('Usuario no habilitado')
-            firebase.auth.signOut()
+          if (snapshot.val().enable) {
+            this.setState({ 
+              enable: true ,
+              user
+            });
           }
-        });
-        this.setState({ user })
+        })
       } else {
-        this.props.history.push('/login')
+        this.props.history.replace('/login')
       }
     })
   };
 
   render() {
+    if (!this.state.enable) return <UserNotEnable />
     return (
       <div className="app">
         <Header />

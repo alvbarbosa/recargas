@@ -38,6 +38,7 @@ class Login extends Component {
   };
 
   handleForm = event => {
+    event.preventDefault();
     const { user, pass } = this.state
     auth.doSignInWithEmailAndPassword(user, pass).then(user => {
       this.props.history.push('/')
@@ -48,7 +49,6 @@ class Login extends Component {
         modal: true,
       })
     })
-    event.preventDefault();
   }
 
   handleChangeUser = event => {

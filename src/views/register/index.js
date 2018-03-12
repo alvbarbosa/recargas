@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import {
   Container,
   Row,
@@ -39,6 +39,7 @@ class Register extends Component {
   }
 
   onSubmit = async event => {
+    event.preventDefault();
     const {
       passwordOne,
       passwordTwo,
@@ -57,7 +58,7 @@ class Register extends Component {
         await user.updateProfile({
           displayName: username,
         })
-        firebase.database.ref(`users/${user.uid}`).set({
+        await firebase.database.ref(`users/${user.uid}`).set({
           username,
           email
         })
@@ -71,7 +72,6 @@ class Register extends Component {
         })
       }
     }
-    event.preventDefault();
   }
 
   render() {
