@@ -19,6 +19,7 @@ export default {
           name: 'Entradas',
           url: '/recharge-wait',
           icon: 'icon-action-redo',
+          admin: true
         }
       ],
     },
@@ -29,13 +30,9 @@ export default {
     },
     {
       name: 'Usuarios',
-      url: '/listUser',
+      url: '/users',
       icon: 'icon-people',
-    },
-    {
-      name: 'Ventas',
-      url: '/sales',
-      icon: 'icon-credit-card',
+      admin: true
     }
   ]
 };

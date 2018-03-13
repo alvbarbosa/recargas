@@ -32,7 +32,7 @@ const EntryRecharges = props => {
     list = props.listRecharges.map(item => {
       return (
         <tr
-          onClick={() => props.handleClickTable(item.key)}
+          onDoubleClick={() => item.status == 1 ? null : props.handleClickTable(item.key)}
           className="text-center"
           key={item.key}
         >

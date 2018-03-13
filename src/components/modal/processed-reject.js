@@ -9,12 +9,18 @@ import {
 
 export class ProcessedRejectModal extends Component {
   state = {
-    modal: false
+    modal: false,
+    successDisabled: false,
   }
 
   componentWillReceiveProps = nextProps => {
     if (nextProps.isOpen)
       this.toggle()
+
+    if (nextProps.successDisabled)
+      this.setState({ successDisabled: true })
+    else
+      this.setState({ successDisabled: false })
   };
 
 
@@ -37,14 +43,14 @@ export class ProcessedRejectModal extends Component {
   toggle
   render() {
     return (
-      <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+      <Modal backdrop={'static'} isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
         <ModalHeader toggle={this.toggle} >Mensaje</ModalHeader>
         <ModalBody>
           {this.props.message}
         </ModalBody>
         <ModalFooter>
-          <Button color="success" onClick={this.handleModalApprove}>Procesado</Button>
-          <Button color="danger" onClick={this.handleModalReject}>Rechazado</Button>
+          <Button disabled={this.state.successDisabled} color="success" onClick={this.handleModalApprove}>{this.props.processed}</Button>
+          <Button color="danger" onClick={this.handleModalReject}>{this.props.reject}</Button>
         </ModalFooter>
       </Modal>
     );

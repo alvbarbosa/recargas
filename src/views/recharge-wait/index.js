@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert  } from "reactstrap";
 
 import RechargeComponent from "../../components/recharge-wait/recharge-wait";
 import { firebase } from '../../firebase'
@@ -10,7 +11,9 @@ class RechargeWait extends Component {
     listRecharges: [],
     isOpen: false,
     messageModal: "",
-    idRecharge: null
+    idRecharge: null,
+    visibleAlert: false,
+    messAlert: "",
   }
   componentDidMount = () => {
     this.rechargeRef().on('child_added', data => { this.addRecharge(data) });
@@ -74,7 +77,31 @@ class RechargeWait extends Component {
     this.rechargeState(2)
   }
   handleModalApprove = () => {
-    this.rechargeState(1)
+    const { uid, valueCel } = this.state.listRecharges
+      .find(x => x.key == this.state.idRecharge)
+
+    firebase.database.ref(`users/${uid}`).transaction(post => {
+      if (post) {
+        if (post.balance) {
+          const total = parseFloat(post.balance) - parseFloat(valueCel)
+          if (total < 0) {
+            this.setState({
+              visibleAlert: true,
+              messAlert: "Revisar el saldo de ese cliente"
+            })
+          } else {
+            post.balance = total
+            this.rechargeState(1)
+          }
+        } else {
+          this.setState({
+            visibleAlert: true,
+            messAlert: "Revisar el saldo de ese cliente"
+          })
+        }
+      }
+      return post
+    })
   }
 
   rechargeState = status => {
@@ -88,9 +115,21 @@ class RechargeWait extends Component {
     }
   }
 
+  onDismiss = event => {
+    this.setState({ visibleAlert: false })
+  }
+
   render() {
+    window.prueba = this.state.listRecharges
     return (
       <div>
+        <Alert
+          color="danger"
+          isOpen={this.state.visibleAlert}
+          toggle={this.onDismiss}
+        >
+          {this.state.messAlert}
+        </Alert>
         <RechargeComponent
           listRecharges={this.state.listRecharges}
           handleClickTable={this.handleClickTable}
@@ -100,6 +139,8 @@ class RechargeWait extends Component {
           message={this.state.messageModal}
           handleModalApprove={this.handleModalApprove}
           handleModalReject={this.handleModalReject}
+          processed="Procesado"
+          reject="Rechazado"
         />
       </div>
     );

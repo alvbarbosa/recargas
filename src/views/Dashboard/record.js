@@ -16,6 +16,7 @@ import {
 } from 'reactstrap';
 
 import { firebase } from "../../firebase";
+import { formatCurrency } from "../../utils";
 
 class Record extends Component {
   state = {
@@ -53,8 +54,6 @@ class Record extends Component {
       .ref(`recharge`)
       .orderByChild('uid')
       .equalTo(user.uid)
-    // .startAt(startDate.toDate().getTime())
-    // .endAt(endDate.toDate().getTime() + 86400000)
     refData.once('value').then(snapshot => {
       const items = snapshot.val()
       this.setState({
@@ -97,7 +96,7 @@ class Record extends Component {
         return (
           <tr key={index} >
             <td>{item.numberCel}</td>
-            <td>{item.valueCel}</td>
+            <td>{formatCurrency(parseFloat(item.valueCel), "$")}</td>
             <td>{(new Date(item.timestamp)).toLocaleString()}</td>
             <td>{this.statusRecharge(item.status)}</td>
           </tr>
@@ -127,7 +126,7 @@ class Record extends Component {
                 <h3><i className="fa fa-envelope-square"></i> Historial de Recargas</h3>
               </CardHeader>
               <CardBody>
-                <Table responsive size="sm">
+                <Table className="text-center" responsive size="sm">
                   <thead>
                     <tr>
                       <th>Telefono</th>

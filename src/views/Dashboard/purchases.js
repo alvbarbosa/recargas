@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Datepicker from 'react-datepicker';
 import moment from "moment";
+import { withRouter } from "react-router-dom";
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   Badge,
@@ -15,34 +16,80 @@ import {
   PaginationLink
 } from 'reactstrap';
 
-class Record extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      startDate: moment()
-    }
-    this.handleChange = this.handleChange.bind(this);
+import { firebase } from "../../firebase";
+import { formatCurrency } from "../../utils";
+
+class Purchases extends Component {
+  state = {
+    startDate: moment().hour(0).minute(0).second(0).subtract(7, 'days'),
+    endDate: moment().hour(0).minute(0).second(0),
+    data: [],
   }
 
-  handleChange(date) {
+  componentWillMount = () => {
+    let uid = ""
+    if (this.props.location.state)
+      uid = this.props.location.state.uid
+    else
+      uid = this.props.user.uid
+
+    if (this.props.user) {
+      const refData = firebase.database.ref(`sales`).orderByChild('uid').equalTo(uid)
+      refData.once('value').then(snapshot => {
+        const items = snapshot.val()
+        this.setState({
+          data: Object.keys(items).map(function (key) { return items[key]; }),
+        })
+        this.setFilterData(this.state.startDate, this.state.endDate)
+      }).catch(err => {
+        this.setState({
+          data: [],
+        })
+      });
+    }
+  };
+
+  setFilterData = (startDate, endDate) => {
     this.setState({
-      startDate: date
-    });
+      startDate,
+      endDate,
+      filterData: this.state.data.filter(e => {
+        return e.timestamp >= startDate.toDate().getTime() && e.timestamp <= (endDate.toDate().getTime() + 86400000)
+      })
+    })
+  }
+
+  handleChangeStart = date => {
+    this.setFilterData(date, this.state.endDate)
+  }
+  handleChangeEnd = date => {
+    this.setFilterData(this.state.startDate, date)
   }
 
   render() {
+    let dataSales = null
+    if (this.state.filterData) {
+      dataSales = this.state.filterData.map((item, index) => {
+        return (
+          <tr key={index}>
+            <td>{formatCurrency(parseFloat(item.value), "$")}</td>
+            <td>{(new Date(item.timestamp)).toLocaleString()}</td>
+          </tr>
+        )
+      })
+    }
     return (
       <div>
         <Row>
-          <Col className="fechas" sm={{ size: 'auto', offset: 4 }} style={{ marginBottom: 40 }}>
+          <Col className="fechas" xs={{ offset: 4 }} style={{ marginBottom: 40 }}>
             <Row>
               <Col>
                 <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Inicial</h4>
-                <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+                <Datepicker selected={this.state.startDate} onChange={this.handleChangeStart} />
               </Col>
               <Col>
                 <h4 className="titulo"><i className="fa fa-calendar iconos"></i> Fecha Final</h4>
-                <Datepicker selected={this.state.startDate} onChange={this.handleChange} />
+                <Datepicker selected={this.state.endDate} onChange={this.handleChangeEnd} />
               </Col>
             </Row>
           </Col>
@@ -54,20 +101,15 @@ class Record extends Component {
                 <h3><i className="fa fa-envelope-square"></i> Compras</h3>
               </CardHeader>
               <CardBody>
-                <Table hover bordered striped responsive size="sm">
+                <Table className="text-center" hover striped responsive size="sm">
                   <thead>
                     <tr>
                       <th>Valor</th>
                       <th>Fecha</th>
-                      <th>Hora</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>$100.000</td>
-                      <td>5/03/2018</td>
-                      <td>10:08 pm</td>
-                    </tr>
+                    {dataSales}
                   </tbody>
                 </Table>
               </CardBody>
@@ -79,4 +121,4 @@ class Record extends Component {
   }
 }
 
-export default Record
+export default withRouter(Purchases)

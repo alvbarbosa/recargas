@@ -24,7 +24,7 @@
 }
 
 .titulo-dato {
-   color:  #1dca49;
+    color: #1dca49;
 }
 
 .dropdown {
@@ -62,9 +62,19 @@
 .iconos::before {
     font-size: 18px;
 }
+
 .fechas {
     background-color: white;
-    padding: 50px;   
+    padding: 50px;
+}
+
+.menu-user {
+    background: transparent;
+    border: 0;
+}
+
+.menu-user i {
+    margin: 0 !important;
 }
 
 @media screen and (max-width: 500px) {

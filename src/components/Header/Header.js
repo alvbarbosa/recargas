@@ -10,8 +10,10 @@ import {
   NavbarToggler,
   NavbarBrand
 } from 'reactstrap';
+
 import HeaderDropdown from './HeaderDropdown';
 import Widget02 from '../Widget02';
+import { formatCurrency } from "../../utils";
 
 class Header extends Component {
   constructor(props) {
@@ -62,7 +64,7 @@ class Header extends Component {
           <span className="navbar-toggler-icon"></span>
         </NavbarToggler>
         <Nav className="ml-auto" navbar>
-          <Widget02 style={{ width: 200 }} header="$1.000.000" mainText="Saldo" icon="fa fa-laptop" color="cyan" />
+          <Widget02 style={{ width: 200 }} header={formatCurrency(parseFloat(this.props.balance), "$")} mainText="Saldo" icon="fa fa-laptop" color="cyan" />
           <NavItem className="d-md-down-none icono-mensaje">
             <NavLink onClick={() => { this.props.history.push('/message') }}><i className="icon-bubbles"></i></NavLink>
           </NavItem>

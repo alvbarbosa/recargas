@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
   Row,
-  Col
+  Col,
+  Alert
 } from 'reactstrap';
 
 import { FormComponent as Form } from '../../components/Form';
@@ -18,7 +19,8 @@ class Dashboard extends Component {
     modal: false,
     messageModal: "",
     listRecharges: [],
-    user: null
+    user: null,
+    visibleAlert: false,
   }
 
   componentDidMount = () => {
@@ -58,21 +60,27 @@ class Dashboard extends Component {
     })
   }
 
-
   handleRecharge = event => {
-    let messageModal = (
-      <div>
-        <h3>Celular:
-          <span className="text-danger" >{this.state.numberCel}</span>
-        </h3>
-        <h3>Valor:
-          <span className="text-danger" >{formatCurrency(parseFloat(this.state.valueCel), "$")}</span>
-        </h3>
-        <h3 className="text-success" >¿Estan correctos los datos?</h3>
-      </div>
-    )
-    this.setState({ messageModal, modal: true })
     event.preventDefault();
+    if (this.state.valueCel > this.props.balance) {
+      this.setState({
+        visibleAlert: true,
+        messAlert: "No tiene suficiente saldo para hacer recargas",
+      })
+    } else {
+      let messageModal = (
+        <div>
+          <h3>Celular:
+          <span className="text-danger" >{this.state.numberCel}</span>
+          </h3>
+          <h3>Valor:
+          <span className="text-danger" >{formatCurrency(parseFloat(this.state.valueCel), "$")}</span>
+          </h3>
+          <h3 className="text-success" >¿Estan correctos los datos?</h3>
+        </div>
+      )
+      this.setState({ messageModal, modal: true })
+    }
   }
   handleChangeCel = event => {
     this.setState({ numberCel: event.target.value })
@@ -114,9 +122,20 @@ class Dashboard extends Component {
     return rechargeRef
   }
 
+  onDismiss = event => {
+    this.setState({ visibleAlert: false })
+  }
+
   render() {
     return (
       <div className="animated fadeIn">
+        <Alert
+          color="danger"
+          isOpen={this.state.visibleAlert}
+          toggle={this.onDismiss}
+        >
+          {this.state.messAlert}
+        </Alert>
         <Row>
           <Col md="6" xs="12">
             <Form
