@@ -42,7 +42,7 @@ class HeaderDropdown extends Component {
         </DropdownToggle>
         <DropdownMenu right>
           <DropdownItem onClick={() => { this.props.history.push('/profile') }}><i className="fa fa-user"></i> Perfil</DropdownItem>
-          <DropdownItem onClick={() => { this.props.history.push('/message') }}><i className="fa fa-comments-o"></i> Mensajes</DropdownItem>
+          {/* <DropdownItem onClick={() => { this.props.history.push('/message') }}><i className="fa fa-comments-o"></i> Mensajes</DropdownItem> */}
           <DropdownItem onClick={this.handleSingOut} ><i className="fa fa-lock"></i> Cerrar Sesion</DropdownItem>
         </DropdownMenu>
       </Dropdown>

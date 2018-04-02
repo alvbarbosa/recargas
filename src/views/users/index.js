@@ -8,7 +8,10 @@ import {
   DropdownItem,
   Input,
   Button,
-  Form
+  Form,
+  FormGroup,
+  Col,
+  Label,
 } from "reactstrap";
 
 import Switches from '../../components/Users/switches'
@@ -29,18 +32,17 @@ class Users extends Component {
   }
 
   componentDidMount = async () => {
-    const snapshot = await firebase.database.ref('users').once('value')
+    let snapshot = null
+    const { rol, uid } = this.props.user
+    if (rol == 'admin') {
+      snapshot = await firebase.database.ref('users').once('value')
+    } else {
+      snapshot = await firebase.database.ref('users').orderByChild('dist').equalTo(uid).once('value')
+    }
     let listUsers = []
     snapshot.forEach(user => {
       const us = user.val()
-      listUsers.push({
-        key: user.key,
-        username: us.username,
-        email: us.email,
-        enable: us.enable,
-        admin: us.admin,
-        balance: us.balance || "0",
-      })
+      listUsers.push(this.createUser(user, us))
     })
     this.setState({
       listUsers,
@@ -57,17 +59,35 @@ class Users extends Component {
   updateUser = user => {
     const us = user.val()
     let userArray = this.state.listUsers
-    userArray[userArray.findIndex(u => u.key == user.key)] = {
+    userArray[userArray.findIndex(u => u.key == user.key)] = this.createUser(user, us)
+    this.setState({
+      listUsers: userArray
+    })
+  }
+
+  createUser = (user, us) => {
+    let rol = ""
+    switch (us.rol) {
+      case "admin":
+        rol = "Administrador"
+        break;
+      case "dist":
+        rol = "Distribuidor"
+        break;
+      default:
+        rol = "Vendedor"
+        break;
+    }
+    return {
       key: user.key,
       username: us.username,
       email: us.email,
       enable: us.enable,
       admin: us.admin,
       balance: us.balance || "0",
+      rol,
+      dist: us.dist
     }
-    this.setState({
-      listUsers: userArray
-    })
   }
 
   usersRef = key => {
@@ -86,9 +106,6 @@ class Users extends Component {
 
   toggleEnable = key => {
     this.updateField('enable', key)
-  }
-  toggleAdmin = key => {
-    this.updateField('admin', key)
   }
 
   toggle(i) {
@@ -137,15 +154,47 @@ class Users extends Component {
     })
   }
 
+  seeRecord = key => {
+    this.props.history.push({
+      pathname: '/record',
+      state: { uid: key }
+    })
+  }
+
   handleModalApprove = () => {
+    const key = firebase.auth.currentUser.uid
     const { keyUser, valueUser } = this.state
+
+    if (this.props.user.rol == 'admin') {
+      this.sendBalance(key)
+    } else {
+      firebase.database.ref(`users/${key}`).transaction(send => {
+        if (send) {
+          if (send.balance) {
+            const balance = parseFloat(send.balance) - parseFloat(valueUser)
+            if (balance > 0) {
+              send.balance = balance
+              this.sendBalance(key,keyUser,valueUser)
+            } else {
+              alert("No tienes suficiente saldo")
+            }
+          } else {
+            alert("No tienes suficiente saldo")
+          }
+        }
+        return send
+      })
+    }
+  }
+
+  sendBalance = (key,keyUser,valueUser) => {
     const newPostRef = firebase.database.ref('sales').push()
     const timestamp = (new Date()).getTime()
     newPostRef.set({
       uid: keyUser,
       value: valueUser,
       timestamp,
-      admin: firebase.auth.currentUser.uid,
+      admin: key,
     })
     firebase.database.ref(`users/${keyUser}`).transaction(post => {
       if (post) {
@@ -163,40 +212,102 @@ class Users extends Component {
 
   }
 
+  handleOptionChange = event => {
+    const keyUser = event.target.name.substring(3, event.target.name.length)
+    firebase.database.ref(`users/${keyUser}`).update({
+      rol: event.target.value
+    })
+  }
+
+  handleSelectChange = event => {
+    const keyUser = event.target.name.substring(3, event.target.name.length)
+    let rol = ""
+    switch (event.target.selectedIndex) {
+      case 0:
+        rol = "admin"
+        break;
+      case 1:
+        rol = "dist"
+        break;
+      default:
+        rol = "seller"
+        break;
+    }
+    firebase.database.ref(`users/${keyUser}`).update({
+      rol
+    })
+  }
+
+  handleSelectDist = event => {
+    const keyUser = event.target.name.substring(3, event.target.name.length)
+    const dist = event.target.selectedOptions[0].value == "Seleccione" ? "" : event.target.selectedOptions[0].value
+    firebase.database.ref(`users/${keyUser}`).update({
+      dist
+    })
+  }
+
   render() {
     const { listUsers } = this.state
     return (
       <UsersComponent>
-        <Table className="text-center" striped responsive>
+        <Table striped responsive style={{ minHeight: 150 }} >
           <thead>
             <tr>
               <th>Usuario</th>
               <th>E-mail</th>
-              <th>Habilitar</th>
-              <th>Administrador</th>
+              {this.props.user.rol == 'admin' && <th>Habilitar</th>}
+              {this.props.user.rol == 'admin' && <th>Rol</th>}
+              {this.props.user.rol == 'admin' && <th>Dist</th>}
               <th>Saldo</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             {listUsers.map((user, index) => (
-              <tr key={user.key}>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>
-                  <Switches
-                    defaultChecked={user.enable}
-                    handleChangeSwitch={() => this.toggleEnable(user.key)}
-                  />
-                </td>
-                <td>
-                  <Switches
-                    defaultChecked={user.admin}
-                    handleChangeSwitch={() => this.toggleAdmin(user.key)}
-                  />
-                </td>
-                <td>{formatCurrency(parseFloat(user.balance), "$")}</td>
-                <td>
+              <tr key={user.key} >
+                <td className="align-middle" >{user.username}</td>
+                <td className="align-middle">{user.email}</td>
+                {this.props.user.rol == 'admin' &&
+                  <td className="align-middle">
+                    <Switches
+                      defaultChecked={user.enable}
+                      handleChangeSwitch={() => this.toggleEnable(user.key)}
+                    />
+                  </td>}
+                {this.props.user.rol == 'admin' &&
+                  <td className="" style={{ fontSize: 12 }} >
+                    <Input
+                      type="select"
+                      name={`sel${user.key}`}
+                      bsSize="sm"
+                      onChange={this.handleSelectChange}
+                      value={user.rol}
+                      style={{ width: '90%' }}
+                    >
+                      <option>Administrador</option>
+                      <option>Distribuidor</option>
+                      <option>Vendedor</option>
+                    </Input>
+                  </td>}
+                {this.props.user.rol == 'admin' &&
+                  <td className="" style={{ fontSize: 12 }} >
+                    <Input
+                      type="select"
+                      name={`dis${user.key}`}
+                      bsSize="sm"
+                      onChange={this.handleSelectDist}
+                      value={user.dist}
+                      style={{ width: '90%' }}
+                      disabled={user.rol == "Vendedor" ? false : true}
+                    >
+                      <option value="Seleccione">Seleccione</option>
+                      {listUsers.filter(item => item.rol == 'Distribuidor').map((item, id) => (
+                        <option key={id} value={item.key}>{item.username}/{item.email}</option>
+                      ))}
+                    </Input>
+                  </td>}
+                <td className="align-middle">{formatCurrency(parseFloat(user.balance), "$")}</td>
+                <td className="align-middle">
                   <ButtonDropdown isOpen={this.state.dropdownOpen[index]} toggle={() => { this.toggle(index); }}>
                     <DropdownToggle className="menu-user text-dark" size="sm">
                       <i className="fa fa-ellipsis-h fa-lg mt-2"></i>
@@ -204,6 +315,7 @@ class Users extends Component {
                     <DropdownMenu right>
                       <DropdownItem onClick={() => this.handleBalance(user.key)} >Recargar Saldo</DropdownItem>
                       <DropdownItem onClick={() => this.seeSales(user.key)}>Ver Compras</DropdownItem>
+                      <DropdownItem onClick={() => this.seeRecord(user.key)}>Ver Recargas</DropdownItem>
                     </DropdownMenu>
                   </ButtonDropdown>
                 </td>

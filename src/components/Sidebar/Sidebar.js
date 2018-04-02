@@ -137,10 +137,15 @@ class Sidebar extends Component {
     // nav list
     const navList = (items) => {
       return items.map((item, index) => {
-        if (item.admin && !this.props.admin) {
+        if (!item.restrict) {
+          return navType(item, index)
+        } else if (item.restrict == 1 && this.props.rol == "admin") {
+          return navType(item, index)
+        } else if (item.restrict == 2 && (this.props.rol == "admin" || this.props.rol == "dist")) {
+          return navType(item, index)
+        } else {
           return null
         }
-        return navType(item, index)
       });
     };
 

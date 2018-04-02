@@ -65,9 +65,9 @@ class Header extends Component {
         </NavbarToggler>
         <Nav className="ml-auto" navbar>
           <Widget02 style={{ width: 200 }} header={formatCurrency(parseFloat(this.props.balance), "$")} mainText="Saldo" icon="fa fa-laptop" color="cyan" />
-          <NavItem className="d-md-down-none icono-mensaje">
+          {/* <NavItem className="d-md-down-none icono-mensaje">
             <NavLink onClick={() => { this.props.history.push('/message') }}><i className="icon-bubbles"></i></NavLink>
-          </NavItem>
+          </NavItem> */}
           <HeaderDropdown />
         </Nav>
       </header>

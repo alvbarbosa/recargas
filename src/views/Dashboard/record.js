@@ -49,11 +49,17 @@ class Record extends Component {
 
   setData = () => {
     const { user } = this.state
+    let uid = ""
+    if (this.props.location.state)
+      uid = this.props.location.state.uid
+    else
+      uid = user.uid
+
     const refData = firebase
       .database
       .ref(`recharge`)
       .orderByChild('uid')
-      .equalTo(user.uid)
+      .equalTo(uid)
     refData.once('value').then(snapshot => {
       const items = snapshot.val()
       this.setState({

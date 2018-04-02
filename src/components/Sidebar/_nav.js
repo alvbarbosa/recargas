@@ -19,7 +19,7 @@ export default {
           name: 'Entradas',
           url: '/recharge-wait',
           icon: 'icon-action-redo',
-          admin: true
+          restrict: 1
         }
       ],
     },
@@ -32,7 +32,7 @@ export default {
       name: 'Usuarios',
       url: '/users',
       icon: 'icon-people',
-      admin: true
+      restrict: 2
     }
   ]
 };

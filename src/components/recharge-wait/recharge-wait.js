@@ -37,6 +37,7 @@ const EntryRecharges = props => {
           key={item.key}
         >
           <td>{item.numberCel}</td>
+          <td>{item.username}</td>
           <td>{formatCurrency(parseFloat(item.valueCel), "$")}</td>
           <td>{(new Date(item.timestamp)).toLocaleString()}</td>
           <td>{statusRecharge(item.status)}</td>
@@ -57,6 +58,7 @@ const EntryRecharges = props => {
                 <thead>
                   <tr className="text-center">
                     <th>Telefono</th>
+                    <th>Usuario</th>
                     <th>Valor</th>
                     <th>Fecha</th>
                     <th>Estado</th>

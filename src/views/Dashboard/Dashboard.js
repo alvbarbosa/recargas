@@ -62,7 +62,7 @@ class Dashboard extends Component {
 
   handleRecharge = event => {
     event.preventDefault();
-    if (this.state.valueCel > this.props.balance) {
+    if (parseFloat(this.state.valueCel) > parseFloat(this.props.balance)) {
       this.setState({
         visibleAlert: true,
         messAlert: "No tiene suficiente saldo para hacer recargas",
@@ -96,7 +96,7 @@ class Dashboard extends Component {
 
   handleModalYes = () => {
     const { numberCel, valueCel } = this.state
-    const myUserId = this.state.user.uid;
+    const { uid, displayName } = this.state.user;
     const rechargeRef = firebase.database.ref(`recharge`)
     const newPostRef = rechargeRef.push();
     const timestamp = (new Date()).getTime()
@@ -104,7 +104,8 @@ class Dashboard extends Component {
       numberCel,
       valueCel,
       timestamp,
-      uid: myUserId
+      uid,
+      username: displayName,
     });
     this.toggle()
     this.setState({

@@ -120,7 +120,6 @@ class RechargeWait extends Component {
   }
 
   render() {
-    window.prueba = this.state.listRecharges
     return (
       <div>
         <Alert

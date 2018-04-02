@@ -43,6 +43,7 @@
     "history": "4.7.2",
     "moment": "^2.21.0",
     "prop-types": "^15.6.1",
+    "push.js": "^1.0.5",
     "react": "16.2.0",
     "react-chartjs-2": "2.7.0",
     "react-datepicker": "^1.2.2",
