@@ -3,7 +3,7 @@ const routes = {
   '/dashboard': 'Recargas  /  Recargar',
   '/record': 'Recargas  /  Historial',
   '/purchases': 'Compras',
-  '/recharge-wait': 'Recargas  /  Entradas',
+  '/recharge-wait': 'Entradas',
   '/sales': 'Ventas',
   '/message': 'Mensajes',
   '/profile': 'Perfil',

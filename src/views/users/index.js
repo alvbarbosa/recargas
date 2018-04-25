@@ -166,7 +166,7 @@ class Users extends Component {
     const { keyUser, valueUser } = this.state
 
     if (this.props.user.rol == 'admin') {
-      this.sendBalance(key)
+      this.sendBalance(key, keyUser, valueUser)
     } else {
       firebase.database.ref(`users/${key}`).transaction(send => {
         if (send) {
@@ -174,7 +174,7 @@ class Users extends Component {
             const balance = parseFloat(send.balance) - parseFloat(valueUser)
             if (balance > 0) {
               send.balance = balance
-              this.sendBalance(key,keyUser,valueUser)
+              this.sendBalance(key, keyUser, valueUser)
             } else {
               alert("No tienes suficiente saldo")
             }
@@ -187,7 +187,7 @@ class Users extends Component {
     }
   }
 
-  sendBalance = (key,keyUser,valueUser) => {
+  sendBalance = (key, keyUser, valueUser) => {
     const newPostRef = firebase.database.ref('sales').push()
     const timestamp = (new Date()).getTime()
     newPostRef.set({

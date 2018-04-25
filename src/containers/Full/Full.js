@@ -70,11 +70,17 @@ class Full extends Component {
 
   addRecharge = recharge => {
     const ref = recharge.val()
+    const history = this.props.history
     if (!ref.status) {
       Push.create("Nueva Recarga!", {
         body: `Celular ${ref.numberCel} por un valor de ${ref.valueCel}`,
         icon: 'img/recharge-icon.png',
         requireInteraction: true,
+        onClick: function () {
+          window.focus();
+          this.close();
+          history.push({ pathname: '/recharge-wait', })
+        }
       });
       var audio = new Audio('img/exquisite.mp3');
       audio.play();

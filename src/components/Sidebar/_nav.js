@@ -14,12 +14,6 @@ export default {
           name: 'Historial',
           url: '/record',
           icon: 'icon-clock',
-        },
-        {
-          name: 'Entradas',
-          url: '/recharge-wait',
-          icon: 'icon-action-redo',
-          restrict: 1
         }
       ],
     },
@@ -33,6 +27,12 @@ export default {
       url: '/users',
       icon: 'icon-people',
       restrict: 2
+    },
+    {
+      name: 'Entradas',
+      url: '/recharge-wait',
+      icon: 'icon-action-redo',
+      restrict: 1
     }
   ]
 };
